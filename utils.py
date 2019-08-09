@@ -2,6 +2,8 @@ import copy
 
 import nltk
 import json
+from gensim.test.utils import datapath, get_tmpfile
+from gensim.scripts.glove2word2vec import glove2word2vec
 from gensim.models import KeyedVectors
 import h5py
 import numpy as np
@@ -12,12 +14,13 @@ def clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
 
 
-def load_feature(filename, dataset='ActivityNet'):
+def load_feature(filename, vid=None, dataset='ActivityNet'):
     if dataset == 'ActivityNet':
         with h5py.File(filename, 'r') as fr:
             return np.asarray(fr['feature']).astype(np.float32)
     elif dataset == 'TACOS':
-        return np.load(filename).astype(np.float32)
+        with h5py.File(filename, 'r') as f:
+            return f[vid][:].astype(np.float32)
     return None
 
 
@@ -26,8 +29,11 @@ def load_json(filename):
         return json.load(fr)
 
 
-def load_word2vec(filename, binary=True):
-    word2vec = KeyedVectors.load_word2vec_format(filename, binary=binary)
+def load_word2vec(filename, binary=False):
+    glove_file = datapath(filename)
+    tmp_file = get_tmpfile("test_word2vec.txt")
+    _ = glove2word2vec(glove_file, tmp_file)
+    word2vec = KeyedVectors.load_word2vec_format(tmp_file)
     return word2vec
 
 

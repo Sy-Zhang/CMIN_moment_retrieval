@@ -15,14 +15,13 @@ def parse_args():
                         help='evaluate the model on dev set')
     parser.add_argument('--dataset', choices=['ActivityNet', 'TACOS'], default='ActivityNet',
                         help='')
-    parser.add_argument('--train-data', type=str,
-                        default=None,
+    parser.add_argument('--train-data', type=str, default=None,
                         help='')
     parser.add_argument('--val-data', type=str, default=None,
                         help='')
     parser.add_argument('--test-data', type=str, default=None,
                         help='')
-    parser.add_argument('--word2vec-path', type=str, default='glove_model.bin',
+    parser.add_argument('--word2vec-path', type=str, default='/data/home2/hacker01/Developer/CMIN_moment_retrieval/.vector_cache/glove.6B.300d.txt',
                         help='')
     parser.add_argument('--feature-path', type=str, default='data/activity-c3d',
                         help='')
@@ -61,7 +60,7 @@ def parse_args():
                  help='Learning Rate Scheduler')
     parser.add_argument('--lr', default=1e-3, type=float,
                         help='learning rate')
-    from optim.lr_scheduler.inverse_square_root_schedule import InverseSquareRootSchedule
+    from optimizer.lr_scheduler.inverse_square_root_schedule import InverseSquareRootSchedule
     InverseSquareRootSchedule.add_args(parser)
     from optimizer.adam_optimizer import AdamOptimizer
     AdamOptimizer.add_args(parser)

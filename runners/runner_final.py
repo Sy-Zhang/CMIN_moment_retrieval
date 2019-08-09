@@ -35,10 +35,10 @@ class Runner:
         test = get_dataset(args.dataset, args.feature_path, args.test_data,
                            self.word2vec, args.max_num_frames, args.max_num_words,
                            args.max_num_nodes, is_training=False)
-        self.train_loader = DataLoader(dataset=train, batch_size=self.args.batch_size, num_workers=4, shuffle=True)
-        self.val_loader = DataLoader(dataset=val, batch_size=self.args.batch_size, num_workers=4,
+        self.train_loader = DataLoader(dataset=train, batch_size=self.args.batch_size, num_workers=0, shuffle=True)
+        self.val_loader = DataLoader(dataset=val, batch_size=self.args.batch_size, num_workers=0,
                                      shuffle=False) if val else None
-        self.test_loader = DataLoader(dataset=test, batch_size=self.args.batch_size, num_workers=4,
+        self.test_loader = DataLoader(dataset=test, batch_size=self.args.batch_size, num_workers=0,
                                       shuffle=False) if test else None
 
     def _build_model(self):

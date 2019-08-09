@@ -47,7 +47,7 @@ class TACOSGCN(Dataset):
 
     def __getitem__(self, index):
         vid, duration, timestamps, sentence, words, id2pos, adj_mat = self.data[index]
-        feats = load_feature(os.path.join(self.feature_path, '%s.npy' % vid[:-4]), dataset='TACOS')
+        feats = load_feature(os.path.join(self.feature_path, 'tall_c3d_features.hdf5'), vid=vid, dataset='TACOS')
         fps = feats.shape[0] / duration
         adj_mat = np.asarray(adj_mat)
         start_frame = int(fps * timestamps[0])
@@ -61,7 +61,7 @@ class TACOSGCN(Dataset):
         assert 0 <= end_frame < feats.shape[0]
         label = np.asarray([start_frame, end_frame]).astype(np.int32)
 
-        words_vec = np.asarray([self.word2vec[word] for word in words])
+        words_vec = np.asarray([self.word2vec[word] if word in self.word2vec.vocab else np.zeros(300).astype(np.float32) for word in words])
         words_vec = words_vec.astype(np.float32)
 
         id2pos = np.asarray(id2pos).astype(np.int64)
